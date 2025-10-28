@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Drive Direct Download Link Generator</title>
+    <link rel="stylesheet" type="text/css" href="drive-96.png">
+    <title>Google Drive Direct Link Converter</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #d4f4a3 0%, #fefce8 100%); /* Softer lime green to pale yellow */
+            background: linear-gradient(135deg, #d4f4a3 0%, #fefce8 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
-
         .container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -31,24 +30,28 @@
             width: 100%;
             text-align: center;
         }
-
         h1 {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             color: #333;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
         }
-
+        h1 img {
+            width: 56px;
+            height: 56px;
+        }
         p {
             color: #666;
             margin-bottom: 32px;
             line-height: 1.5;
         }
-
         .input-section {
             margin-bottom: 32px;
         }
-
         #inputLink {
             width: 100%;
             padding: 16px 20px;
@@ -58,21 +61,18 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             background: #fff;
         }
-
         #inputLink:focus {
             outline: none;
-            border-color: #bfff00; /* Match convert button color */
+            border-color: #bfff00;
             box-shadow: 0 0 0 3px rgba(191, 255, 0, 0.2);
         }
-
         #inputLink:hover {
             border-color: #d1d5db;
         }
-
         #convertBtn {
             width: 100%;
             padding: 16px 32px;
-            background: #bfff00; /* Lime green */
+            background: #bfff00;
             color: #333;
             border: none;
             border-radius: 16px;
@@ -82,27 +82,18 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             margin-top: 16px;
         }
-
         #convertBtn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(191, 255, 0, 0.4);
         }
-
         #convertBtn:active {
             transform: translateY(0);
+            background: #a3cc00;
         }
-
-        #convertBtn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
         .output-section {
             display: none;
             margin-top: 32px;
         }
-
         .output-link {
             background: #f8fafc;
             border: 2px dashed #e2e8f0;
@@ -113,14 +104,11 @@
             font-family: monospace;
             font-size: 14px;
             color: #475569;
-            position: relative;
         }
-
         .output-actions {
             display: flex;
             gap: 12px;
         }
-
         .btn {
             flex: 1;
             padding: 12px 20px;
@@ -130,30 +118,39 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-
+        .btn img {
+            width: 20px;
+            height: 20px;
+        }
         .btn-copy {
-            background: #FAB12F; /* Vibrant orange-yellow */
+            background: #FAB12F;
             color: #333;
         }
-
         .btn-copy:hover {
             background: #e39b1e;
             transform: translateY(-1px);
             box-shadow: 0 5px 15px rgba(250, 177, 47, 0.4);
         }
-
+        .btn-copy:active {
+            background: #d97706;
+        }
         .btn-download {
-            background: #0053ff; /* Bright blue */
+            background: #0053ff;
             color: white;
         }
-
         .btn-download:hover {
             background: #0039cc;
             transform: translateY(-1px);
             box-shadow: 0 5px 15px rgba(0, 83, 255, 0.4);
         }
-
+        .btn-download:active {
+            background: #002db3;
+        }
         .error {
             background: #fef2f2;
             border: 2px solid #fecaca;
@@ -163,21 +160,21 @@
             margin-top: 16px;
             display: none;
         }
-
         @media (max-width: 480px) {
             .container {
                 padding: 32px 24px;
             }
-
             h1 {
-                font-size: 24px;
+                font-size: 26px;
+            }
+            h1 img {
+                width: 48px;
+                height: 48px;
             }
         }
-
         .fade-in {
             animation: fadeIn 0.5s ease-out;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -186,21 +183,26 @@
 </head>
 <body>
     <div class="container fade-in">
-        <h1>🚀 Google Drive Direct Link</h1>
+        <h1>
+            <img src="drive-96.png" alt="Google Drive Icon">
+            Direct Link Converter
+        </h1>
         <p>Paste your Google Drive File share link below to generate a one-click direct download link.</p>
-        
+       
         <div class="input-section">
             <input type="url" id="inputLink" placeholder="https://drive.google.com/file/d/YOUR_FILE_ID/view?usp=sharing" />
             <button id="convertBtn">Convert to Direct Link</button>
         </div>
-
         <div id="error" class="error"></div>
-
         <div id="outputSection" class="output-section">
             <div id="directLink" class="output-link"></div>
             <div class="output-actions">
-                <button id="copyBtn" class="btn btn-copy">📋 Copy Link</button>
-                <button id="downloadBtn" class="btn btn-download">⬇️ Download</button>
+                <button id="copyBtn" class="btn btn-copy">
+                    <img src="drive-48.png" alt="Copy"> Copy Link
+                </button>
+                <button id="downloadBtn" class="btn btn-download">
+                    <img src="drive-48.png" alt="Download"> Download
+                </button>
             </div>
         </div>
     </div>
@@ -225,7 +227,6 @@
         }
 
         function isValidFileLink(url) {
-            // Check if the link matches Google Drive file share pattern
             const filePattern = /drive\.google\.com\/file\/d\/([a-zA-Z0-9-_]+)/;
             return filePattern.test(url);
         }
@@ -263,7 +264,7 @@
 
             const directUrl = generateDirectLink(fileId);
             directLink.textContent = directUrl;
-            directLink.href = directUrl; // For accessibility
+            directLink.href = directUrl;
             outputSection.style.display = 'block';
             outputSection.scrollIntoView({ behavior: 'smooth' });
         });
@@ -272,7 +273,7 @@
             const directUrl = directLink.textContent;
             navigator.clipboard.writeText(directUrl).then(() => {
                 const original = copyBtn.innerHTML;
-                copyBtn.innerHTML = '✅ Copied!';
+                copyBtn.innerHTML = '<img src="drive-48.png" alt="Copied"> Copied!';
                 setTimeout(() => {
                     copyBtn.innerHTML = original;
                 }, 2000);
@@ -289,7 +290,6 @@
             document.body.removeChild(a);
         });
 
-        // Allow Enter key in input to convert
         inputLink.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 convertBtn.click();
